@@ -1,10 +1,11 @@
 import React,{useState,useEffect} from 'react'
-import { View, Text,StyleSheet } from 'react-native'
+import { View, Text,StyleSheet,Pressable,Modal } from 'react-native'
 import { Divider,NativeBaseProvider,FlatList,ScrollView,Image,Spinner} from 'native-base';
 import Services from '../Services/Services';
 import moment from 'moment'
 export default function All() {
    const [newsdata,setNewsdata]=useState([]);
+   const [modalVisible, setModalVisible] = useState(false);
     useEffect(()=>{
         Services("general")
         .then(data=>{
@@ -13,9 +14,12 @@ export default function All() {
             alert(err)
         })
     },[])
-    return (
+
+
+  return (
         <NativeBaseProvider>
         <View style={{marginBottom:30}}>
+         
             <View style={styles.container}>
                 <Text style={styles.text}>All News</Text>
             </View>
@@ -29,35 +33,77 @@ export default function All() {
                         <View style={{marginTop:10}}>
                             <View style={{paddingHorizontal:15,paddingBottom:10}}>
                                 <Image
-                                 height={200}
-                                 width={550}
-                               
-                              
-                                source={{
-                                    uri: item.urlToImage?item.urlToImage : "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg",
-                                }}
-                                alt="Alternate Text"
+                                    height={200}
+                                    width={550}
+                                    source={{
+                                        uri: item.urlToImage?item.urlToImage : "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg",
+                                    }}
+                                    alt="Alternate Text"
                                 />
-                            </View> 
+                             </View> 
                         
                             <View style={styles.myflex}>
-                                <Text style={styles.title}>{item.title}</Text>
+                                <Pressable
+                                    style={({ pressed }) => [
+                                        {
+                                        backgroundColor: pressed
+                                            ? '#85C1E9'
+                                            : 'white'
+                                        },
+                                        styles.button,styles.buttonOpen
+                                    ]}
+                                    onPress={() =>setModalVisible(true)}   
+                                        
+                                            
+                                        >
+                                            <Text style={styles.title}>{item.title}</Text>
+                                </Pressable>
                                 <Text style={styles.date}>{moment(item.publishedAt).format('lll')}</Text>
                             </View>
                             <View style={styles.myflex}>
                                 
                             </View>
-                           
+                     {/* modal start */}
+                        <Modal
+                            animationType="slide"
+                        
+                            visible={modalVisible}
+                            onRequestClose={() => {
+                            
+                            setModalVisible(!modalVisible);
+                            }}
+                    
+                        
+                        >
+                            <View>
+                                <View style={styles.myflex}>
+                                    <Pressable
+                                        style={({ pressed }) => [
+                                            {
+                                            backgroundColor: pressed
+                                                ? '#85C1E9'
+                                                : 'white'
+                                            },
+                                            styles.button,styles.buttonOpen
+                                        ]}
+                                        onPress={() => setModalVisible(false)}   
+                                        >
+                                        <Text style={styles.title}>close</Text>
+                                        </Pressable>
+                                     </View>
+                                    </View>    
+                                </Modal>
+
+                        {/* modal end */}
                             <View style={styles.description}>
                                 <Text style={styles.destitle}>{item.description}</Text>
-                                
                             </View>
                         </View>
                         <Divider my="2"  bg="gray.300" thickness="10" />
                     </View>     
                     
                 )}
-                keyExtractor={(item) => item.id}
+                keyExtractor={(item) => item.title}
          />
         :(
             <View style={styles.myspiner}>
@@ -87,7 +133,7 @@ const styles=StyleSheet.create({
    },
 
    myflex:{
-   paddingHorizontal:20
+   paddingHorizontal:15
     
    },
 
@@ -100,7 +146,7 @@ const styles=StyleSheet.create({
        fontSize:16
    },
    description:{
-     padding:20
+     padding:15
    },
    destitle:{
 
@@ -112,5 +158,13 @@ const styles=StyleSheet.create({
     alignItems:"center",
     paddingTop:250
  
-    }
+    },
+    button: {
+        
+        padding: 10,
+        elevation: 5
+      },
+      buttonOpen: {
+        
+      }
 })

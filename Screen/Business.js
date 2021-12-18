@@ -55,7 +55,7 @@ export default function Business() {
                    </View>     
                    
                )}
-               keyExtractor={(item) => item.id}
+               keyExtractor={(item) => item.title}
         />:(
             <View style={styles.myspiner}>
                <Spinner color="cyan.500" />

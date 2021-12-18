@@ -54,7 +54,7 @@ export default function Entertainment() {
                     </View>     
                     
                 )}
-                keyExtractor={(item) => item.id}
+                keyExtractor={(item) => item.title}
          />:(
             <View style={styles.myspiner}>
                <Spinner color="cyan.500" />
