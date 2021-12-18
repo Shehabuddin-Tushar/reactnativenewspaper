@@ -64,7 +64,7 @@ export default function All() {
                                 
                             </View>
                      {/* modal start */}
-                        <Modal
+                        {/* <Modal
                             animationType="slide"
                         
                             visible={modalVisible}
@@ -92,7 +92,7 @@ export default function All() {
                                         </Pressable>
                                      </View>
                                     </View>    
-                                </Modal>
+                                </Modal> */}
 
                         {/* modal end */}
                             <View style={styles.description}>
